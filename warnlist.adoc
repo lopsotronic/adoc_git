@@ -1,0 +1,26 @@
+// tag::warnings[]
+// tag::warn001[]
+[WARNING]
+====
+Here is a warning in a giant list of warnings. This is a fragment of a master warning list. It's the first one, warn001.
+====
+// end::warn001[]
+
+// tag::warn002[]
+[WARNING]
+====
+This is the second warning in a giant list of warnings. Once again, another fragment
+====
+// end::warn002[]
+
+// tag::warn003[]
+[WARNING]
+====
+Warning numero tres
+====
+// end::warn003[]
+
+// tag::snippet-b[]
+snippet b
+// end::snippet-b[]
+// end::warnings[]

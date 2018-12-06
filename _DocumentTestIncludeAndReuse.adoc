@@ -1,0 +1,297 @@
+= ASCIIdoc: Introduction, Common Constructs, Content Reuse and Conditional Content
+Insitu Tools Desk, written in ASCIIdoc 
+v1.0, 2018-11
+:doctype: book
+:encoding: utf-8
+:lang: en
+:toc: left
+:toclevels: 2
+:numbered:
+:Engine: N20
+:CrazySpark: CrazySpark
+
+== Introduction
+
+We're going to look at some simple examples of content re-use and conditional content using the ASCIIdoc lightweight markup language (LML). Before we get into that, a quick introduction and some simple constructs.
+
+ASCIIdoc is a plaintext LML with some simple formatting marks to create things like lists, tables, figures, and other constructs. The idea with LMLs was to provide something like XML's semantic tagging without the  "angle bracket tax" and the extreme complexity of constructs like namespaces. ASCIIdoc is exhaustively documented https://ASCIIdoctor.org/docs/ASCIIdoc-syntax-quick-reference/[here] and all over the web. 
+
+ASCIIdoc semantics are based on the DocBook XML dictionary; ASCIIdoc can therefore leverage the vast DocBook ecosystem for specialized formatting and for other powerful functionality, notably https://github.com/kibook/s1kd-tools[S1000D 4.X interoperability] and  https://github.com/redpen-cc/redpen[RedPen], which is capable of https://en.wikipedia.org/wiki/Simplified_Technical_English[STE] checking.
+
+ASCIIdoc files are text files and can be managed accordingly. The minimal markup means that the source files are easily readable, so CMS infrastructure options are varied. Possibilities include: an ASCIIdoc front end for technical publications, like https://antora.org/[Antora]; a stock Version Control System (VCS) like Git, Mercurial, Perforce, Team Foundation, etc.; a simple CMS; or an enterprise Wiki like https://en.wikipedia.org/wiki/Foswiki[FosWiki] or https://en.wikipedia.org/wiki/MoinMoin[M2]. Finally, you could use a flat file structure, so long as your recordkeeping was solid.
+
+.Example ASCIIdoc Infrastructure
+[graphviz, ASCIIdocFlow7, svg]
+----
+digraph G {
+  node [shape=record];
+  rankdir="LR";
+  "Tech Writer" -> "ASCIIdoc repo (Git)" [dir=none]
+  "Tech Writer" -> "Web Application (Antora)" [dir=none]
+  "Tech Writer" -> "Editor (ASCIIdocFX)" [dir=none]
+  "Editor (ASCIIdocFX)" -> "ASCIIdoc repo (Git)" [dir=none]
+  "ASCIIdoc repo (Git)" -> "Web Application (Antora)" [dir=none]
+  "ASCIIdoc repo (Git)" -> "HTML5 generator"
+  "ASCIIdoc repo (Git)" -> "DocBook"
+  "ASCIIdoc repo (Git)" -> "PDF"
+  "DocBook" -> "XSL-FO" -> "Formal PDF"
+}
+----
+
+[CAUTION]
+====
+A modern VCS is recommended; there's just too much useful infrastructure built up around tools like Git to let it go to waste. Avoid frontends that insist on customized data structures.
+====
+
+Incidentally, this document was written in ASCIIdoc with the https://ASCIIdocfx.com/[ASCIIdocFX] writing tool. 
+
+[NOTE]
+====
+It's worth noting I don't really know what I am doing here, but I'm nevertheless managing some pretty complex constructs and constraints.
+====
+
+== Common constructs
+
+Let's look at some common constructs in ASCIIdoc.
+
+=== Admonitions
+
+Let's look at some admonitions
+
+[WARNING]
+====
+This is a warning
+====
+
+[NOTE]
+====
+[[Reference]]This is a note. This note also has a reference anchor, which we'll be using later.
+====
+
+[CAUTION]
+====
+This is a caution
+====
+
+In ASCIIdoc, that is rendered by the following
+
+[source,adoc]
+----
+[WARNING]
+====
+This is a warning
+====
+
+[NOTE]
+====
+[[Reference]]This is a note. This note also has a reference anchor, which we'll be using later.
+====
+
+[CAUTION]
+====
+This is a caution
+====
+----
+
+=== Internal reference
+
+Here is an internal link, like an `+xref+`. Clicking <<Reference>> takes you back to the NOTE example, which was tagged with an anchor.
+
+That's rendered in ASCIIdoc by the following, with "Reference" being the text of the target anchor.
+
+[source,adoc]
+----
+Here is an internal link, like an `+xref+`. Clicking <<Reference>> takes you back to the NOTE example, which was tagged with an anchor.
+----
+
+[NOTE]
+====
+Note that the "code literal" inline with the text (in this case, 'xref') is declared with a backtick and a plus sign. 
+====
+
+We can also reference any heading by entering the text of the heading in double angle brackets, like this link back to the first paragraph: <<Introduction>>
+
+=== Procedure steps (numbered list)
+
+This is a sample numbered list
+
+.SampleList
+
+. Procedure step 1
+.. Procedure step 1 secondary
+... Procedure step 1 tertiary
+. Procedure step 2
+. Procedure step 3
+
+In ASCIIdoc
+
+[source,adoc]
+----
+.SampleList
+
+. Procedure step 1
+.. Procedure step 1 secondary
+... Procedure step 1 tertiary
+. Procedure step 2
+. Procedure step 3
+----
+
+=== Tables
+
+Here is a sample table
+
+.Sample table
+[width="100%",options="header,footer"]
+|====================
+| sample | sample | sample 
+| sample | sample | sample 
+| sample | sample | sample 
+|====================
+
+Rendered in ASCIIdoc from
+
+[source,adoc]
+----
+.Sample table
+[width="100%",options="header,footer"]
+|====================
+| sample | sample | sample 
+| sample | sample | sample 
+| sample | sample | sample 
+|====================
+----
+
+But there's much better ways of drawing tables. Here's another more useful way of rendering a table. This is pretty neat. This takes an external CSV file and renders it as a table in the content. Death to Copy and Paste!
+
+.Sample table as an external include from a CSV file
+[format="csv", options="header"]
+|===
+include::tools.csv[]
+|===
+
+This is accomplished via an `+include+`, as shown below. I've escaped the include with a `+(\)+` so it won't bring it in again.
+
+[source, adoc]
+----
+.Sample table as an external include from a CSV file
+[format="csv", options="header"]
+|===
+\include::tools.csv[]
+|===
+----
+
+=== Graphics
+
+This is a sample figure in SVG format
+
+.SE2
+
+image::SE2.svg[]
+
+Which looks like this in ASCIIdoc:
+
+[source,adoc]
+----
+.SE2
+
+image::SE2.svg[]
+----
+
+Let's see a graphviz DOT diagram. This is rendering graphics from a textual graph description, in this case a flow diagram, that's inline with the content. Rendering as SVG.
+
+.DOT diagram example
+[graphviz, dot-example3, svg]
+----
+digraph g {
+  node [shape=record];
+  rankdir="LR";
+    a -> b
+    b -> c
+    c -> d
+    d -> a
+}
+----
+
+Here's the same diagram as a text file. More informatio on the DOT graphing language http://www.graphviz.org/doc/info/lang.html[here]. 
+
+[source,]
+----
+.DOT diagram example
+[graphviz, dot-example, svg]
+digraph g {
+    a -> b
+    b -> c
+    c -> d
+    d -> a
+}
+----
+
+Pretty neat, and without opening so much as a single graphics application. There are many such graph languages that ASCIIdoc can render out-of-the-box.
+
+[NOTE]
+====
+ASCIIdoc can `+include+` from a large variety of different file types and source code repositories. There's a lot more capability than what's being shown here.
+====
+
+OK, now for the hard stuff.
+
+== Conditional content and content re-use
+
+=== Content fragment re-use
+
+Content re-use isn't restricted to whole documents (i.e., like a PM referencing DMs). ASCIIdoc can also re-use _chunks_ of documents by by using tagged regions with the `+include+` directive.
+
+Let's reference an admonition from a master warning list that's stored in an outside document called `+warnlist.adoc+`.
+
+include::warnlist.adoc[tag=warn002]
+
+That was easy! That was produced by the following ASCIIdoc. 
+
+[source,adoc]
+----
+\include::warnlist.adoc[tag=warn002]
+----
+
+You can see the include to the external file `+warnlist.adoc+`, and the bracketed tag command `+warn002+` picks out the individual content element. This mechanism can use multiple tags separated by commas, or it can use groups of nested tags.
+
+[WARNING]
+====
+As with S1000D, conditions and tags require careful curation and an awareness of the audience's appetite for product complexity
+====
+
+=== Conditional content
+
+Conditional content is handled in DITA by Conrefs, in S1000D via the Applicability mechanism, Docbook by Profiles. In ASCIIdoc it's handled via https://github.com/asciidoctor/asciidoctor.org/blob/master/docs/_includes/conditional-preprocessor-directives.adoc[Conditional directives]. The one we're looking at today is the `+ifeval+` directive.
+
+The following section is dynamically generated depending on the document attributes Engine and CrazySpark. These attributes were declared up in the beginning of the master document.
+
+ifeval::["{Engine}" == "N20"]
+This information is only displayed when the Engine attribute is set to N20
+
+include::testinclude.adoc[]
+
+This is where we get out of the `+include+`
+
+endif::[]
+
+ifeval::["{Engine}" == "N30"]
+This information is only displayed when the Engine attribute is set to N30
+
+include::testincludeN30.adoc[]
+
+This is where we get out of the `+include+`
+
+endif::[]
+
+Here's some content after our conditional block
+
+That conditional include looked like this. We're escaping everything with `+(\)+` in the example below. There is another conditional block with Engine set to N30, which only shows when the Engine attribute is set to N30.
+
+[source,adoc]
+----
+\ifeval::["{Engine}" == "N20"]
+\This information is only displayed when the Engine attribute is set to N20
+\include::testinclude.adoc[]
+----
+
+It's also possible to do this with multiple tags or groups of tags, or to perform an include based on document position, or to pull source code based on methods and functions. Again, there is a lot of functionality not shown in this introduction, much of it shared with DocBook.

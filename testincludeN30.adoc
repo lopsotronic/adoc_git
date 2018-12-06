@@ -1,0 +1,12 @@
+==== Test include for N30
+This is an include of an external document inside of a condition tag. In this include, we have a block of conditional text that is driven by the condition declared in the containing document. In this case, "Crazy Spark Plug" or CrazySpark.
+
+ifeval::["{CrazySpark}" == "CrazySpark"]
+===== CrazySpark special instructions
+
+This information is only displayed for the CRAZY SPARK PLUG part number AAARRRGH. Here is an image inside of the ifeval directive
+
+.Identification of faulty ignition system
+image::CrazySpark.png[]
+
+endif::[]

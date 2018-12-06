@@ -1,0 +1,12 @@
+==== Test include for N20
+This is an include of an external document inside of a condition tag. This is actually from a different document. We've set it up so the include is only called when the Engine attribute is set to "N20"
+
+Let's get some procedure steps in here
+
+. Procedure continues for N20
+. More N20
+
+And a figure
+
+.Postflight inspection of the ScanEagle air vehicle
+image::N20Reuse.png[]
