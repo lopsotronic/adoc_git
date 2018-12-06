@@ -1,5 +1,5 @@
 = ASCIIdoc: Introduction, Common Constructs, Content Reuse and Conditional Content
-Insitu Tools Desk, written in ASCIIdoc 
+TechPubs Tools Desk, written in ASCIIdoc 
 v1.0, 2018-11
 :doctype: book
 :encoding: utf-8
