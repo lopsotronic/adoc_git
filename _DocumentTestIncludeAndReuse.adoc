@@ -226,6 +226,67 @@ digraph g {
 }
 ----
 
+Using PlantUML, we can also render UML diagrams from inline text, like so:
+
+.UML Diagram Example
+[uml,file="uml-example.png"]
+----
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+class ArrayList {
+  Object[] elementData
+  size()
+}
+
+enum TimeUnit {
+  DAYS
+  HOURS
+  MINUTES
+}
+
+annotation SuppressWarnings
+----
+
+This is rendered from the following inline UML
+
+[source,uml]
+----
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+List <|-- AbstractList
+Collection <|-- AbstractCollection
+
+Collection <|- List
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+class ArrayList {
+  Object[] elementData
+  size()
+}
+
+enum TimeUnit {
+  DAYS
+  HOURS
+  MINUTES
+}
+
+annotation SuppressWarnings
+----
+
 Pretty neat, and without opening so much as a single graphics application. There are many such graph languages that ASCIIdoc can render out-of-the-box.
 
 [NOTE]
