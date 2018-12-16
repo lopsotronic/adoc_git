@@ -1,4 +1,4 @@
 # adoc_git
 Main page
 
-(_DocumentTestIncludeAndReuse.adoc)
+adoc_git/_DocumentTestIncludeAndReuse.adoc
