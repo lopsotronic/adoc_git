@@ -1,0 +1,89 @@
+= ASCIIdoc: Form Generation
+TechPubs Tools Desk, written in ASCIIdoc 
+v1.0, 2018-12
+:doctype: book
+:encoding: utf-8
+:lang: en
+:toc: left
+:toclevels: 2
+:numbered:
+
+== General
+
+This document shows how HTML forms are currently handled in ASCIIDoc. With the exception of  https://asciidoctor.org/docs/user-manual/#checklist[checklists], ASCIIDoc uses the https://asciidoctor.org/docs/user-manual/#pass-blocks[passthrough block] mechanism to render elements like forms.
+
+The advantage of using ASCIIdoc for form generation:
+
+* Access to other ASCIIdoc elements and directives, such as admonitions, headings, and others.
+
+* The surrounding HTML around the form passthroughs can be managed in the ASCIIDoc/Git document processing pipeline, as opposed to a full web CMS with its corresponding overhead and maintenance. 
+
+* ASCIIDoc mechanisms can be used to manage form elements for specific deliverables, using https://asciidoctor.org/docs/user-manual/#conditional-preprocessor-directives[conditional content via ifeval statements]  and contenbt reuse via https://asciidoctor.org/docs/user-manual/#include-directive[include].
+
+== Native ASCIIDoc checklists
+
+https://asciidoctor.org/docs/user-manual/#checklist[Checklists] are one of the few form elements handled natively in ASCIIDoc. See the following:
+
+.Sample Interactive Checklist
+[%interactive]
+* [ ] checked
+* [ ] also checked
+* [ ] not checked
+*     normal list item
+
+This is rendered from the following:
+
+[source,adoc]
+----
+.Sample Interactive Checklist
+[%interactive]
+* [ ] checked
+* [ ] also checked
+* [ ] not checked
+*     normal list item
+----
+
+== Text Fields
+++++
+<input type="text" name="field1">
+++++
+
+Another one
+
+++++
+<input type="text" name="field2">
+++++
+
+== Text area
+
+++++
+<textarea name="message" rows="10" cols="30">
+This is an editable text area
+</textarea>
+++++
+
+== Radio button
+
+++++
+  <input type="radio" name="radio" value="radio1"> Radio1<br>
+  <input type="radio" name="radio" value="radio2"> Radio2<br>
+  <input type="radio" name="radio" value="radio3"> Radio3
+++++
+
+== Combining fields into forms
+
+To make a working form that can send data to a backend system, wrap form elements in a //form element and add a Submit button.
+
+[CAUTION]
+====
+Note that the Submit action won't necessarily save this information anywhere unless a backend is set up to receive and process the incoming data from the HTML form.
+====
+
+++++
+<form>
+<input type="text" name="field3"><br>
+<input type="text" name="field4"><br>
+
+<input type="submit" value="Submit">
+</form
+++++
